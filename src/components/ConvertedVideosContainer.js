@@ -9,10 +9,10 @@ import './ConvertedVideosContainer.css';
 
 export default class ConvertedVideosContainer extends Component {
     render() {
-        const { files } = this.props;
+        const { refProp, files } = this.props;
 
         return (
-            <div className='converted-videos-container'>
+            <div ref={refProp} className='converted-videos-container'>
                 {files.map((file, index) => (
                     <Paper 
                         elevation={3}

@@ -12,9 +12,10 @@ import UploadIcon from '@material-ui/icons/CloudUpload';
 // TODO:
 // import GifIcon from '@material-ui/icons/Gif';
 
-import ConvertedVideosContainer from './ConvertedVideosContainer.js';
-import { fetchVideosFromGif, mapAPIResultsToFiles, formatBytes } from './../util';
-import { primary, secondaryLight } from '../theme.js';
+import ConvertedVideosContainer from './ConvertedVideosContainer';
+import { fetchVideosFromGif, mapAPIResultsToFiles, formatBytes } from '../utils/util';
+import { secondaryLight } from '../utils/theme';
+import CodeExplainer from './CodeExplainer';
 
 const MAX_INPUT_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 
@@ -29,6 +30,7 @@ export default class Main extends Component {
         };
 
         this.inputRef = React.createRef();
+        this.convertedFilesContainerRef = React.createRef();
         this.handleFileInputChange = this.handleFileInputChange.bind(this);
     }
 
@@ -51,7 +53,12 @@ export default class Main extends Component {
                 const results = await fetchVideosFromGif(inputFile);
                 const convertedFiles = results.map((file) => mapAPIResultsToFiles(file, inputFile));
     
-                this.setState({ convertedFiles, loading: false });
+                this.setState({ convertedFiles, loading: false }, () => {
+                    // * scroll to converted files when rendered
+                    if (this.convertedFilesContainerRef.current) {
+                        window.scrollTo(0, this.convertedFilesContainerRef.current.offsetTop)
+                    }
+                });
             });
 
         }
@@ -67,6 +74,8 @@ export default class Main extends Component {
 
         return (
             <main>
+                <CodeExplainer />
+
                 {showFileSizeError && 
                     <Alert 
                         style={{ marginTop: -40, marginBottom: 40 }}
@@ -127,12 +136,11 @@ export default class Main extends Component {
 
                 {convertedFiles && 
                     <React.Fragment>
-                        <hr style={{ 
-                            borderColor: primary[500],
-                            width: '100%',
-                            marginTop: 20,
-                        }} />
-                        <ConvertedVideosContainer files={convertedFiles} />
+                        <hr />
+                        <ConvertedVideosContainer 
+                            refProp={this.convertedFilesContainerRef} 
+                            files={convertedFiles} 
+                        />
                     </React.Fragment>
                 }
                 {loading && 

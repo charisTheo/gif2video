@@ -8,6 +8,9 @@ html, body, #root, .App {
   margin: 0;
   padding: 0;
 }
+html {
+  scroll-behavior: smooth;
+}
 
 .App {
   position: relative;
@@ -97,9 +100,36 @@ main .converting-file-progress {
   margin-left: 10px;
 }
 
-/* footer {
-  
-} */
+.code-explainer-container {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+footer {
+  padding-top: 0;
+}
+footer ul {
+  margin: 0;
+  padding: 20px;
+  text-align: left;
+  list-style: none;
+  display: inline-block;
+}
+footer ul li {
+  margin: 10px auto;
+}
+
+hr {
+  border-color: #37474f;
+  width: 100%;
+  margin-top: 20px;
+}
+
+@media screen and (min-width: 768px) {
+  .header-github-link svg {
+    font-size: 2.5rem;
+  }
+}
 
 @keyframes spin {
   from {

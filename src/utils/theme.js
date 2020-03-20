@@ -43,6 +43,11 @@ const theme = createMuiTheme({
                 color: 'rgb(250, 179, 174)',
                 backgroundColor: 'rgb(24, 6, 5)'
             }
+        },
+        MuiSnackbarContent: {
+            root: {
+                fontSize: '1rem'
+            }
         }
     //     MuiBackdrop: {
     //         root: {

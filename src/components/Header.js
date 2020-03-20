@@ -4,7 +4,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import NumberTwoIcon from '@material-ui/icons/LooksTwo';
 
-import { secondaryLight, white } from '../theme';
+import { secondaryLight, white } from '../utils/theme';
 
 export default class Header extends Component {
     render() {

@@ -1,14 +1,29 @@
 import React, { Component } from 'react'
-import { secondary, primary } from '../theme';
+import { Link } from '@material-ui/core';
 
-// TODO: add hosting information, created by, created with
+import { secondaryLight } from '../utils/theme';
 
 export default class Footer extends Component {
     render() {
         return (
-            <footer style={{ backgroundColor: secondary[800], color: primary[300]}}>
-                <h4>Footer</h4>
-            </footer>
+            <React.Fragment>
+                <hr style={{ marginBottom: 0 }}/>
+
+                <footer style={{ 
+                    // backgroundColor: secondary[800], 
+                    color: secondaryLight
+                }}>
+                    <ul>
+                        <li>Created with{' '}
+                            <Link target="_blank" href="https://material-ui.com/">Material UI</Link>
+                            {' '}&amp;{' '}
+                            <Link target="_blank" href="https://ffmpeg.org/">ffmpeg</Link>
+                        </li>
+                        <li>Created by <Link target="_blank" href="https://charistheo.io">charisTheo</Link></li>
+                        <li>Hosted on <Link target="_blank" href="https://www.netlify.com/">Netlify</Link></li>
+                    </ul>
+                </footer>
+            </React.Fragment>
         )
     }
 }

@@ -5,7 +5,7 @@ import Header from './components/Header';
 import Main from './components/Main';
 import Footer from './components/Footer';
 
-import theme, { secondary, white } from './theme';
+import theme, { secondary, white } from './utils/theme';
 import './App.css';
 
 function App() {
