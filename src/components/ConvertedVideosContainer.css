@@ -21,3 +21,13 @@
     width: 100%;
     margin-top: 20px;
 }
+.download-all-chip-container {
+    position: relative;
+}
+.download-all-chip-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}

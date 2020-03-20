@@ -7,6 +7,8 @@ import DownloadIcon from '@material-ui/icons/GetApp';
 import MovieIcon from '@material-ui/icons/Movie';
 import SpeedIcon from '@material-ui/icons/Speed';
 
+import { red, green } from '../utils/theme';
+
 export default class ConvertedVideoDetails extends Component {
     constructor(props) {
         super(props);
@@ -15,6 +17,8 @@ export default class ConvertedVideoDetails extends Component {
     }
     render() {
         const { 
+            inputFileSizeBytes,
+            outputFileSizeBytes,
             outputFileSize,
             objectUrl, 
             name,
@@ -24,7 +28,11 @@ export default class ConvertedVideoDetails extends Component {
         return (
             <div className="converted-video-details">
                 <Chip label={type} variant="outlined" color="primary" icon={<MovieIcon />} />
-                <Chip label={outputFileSize} variant="outlined" color="primary" icon={<SpeedIcon />} />
+                <Chip 
+                    label={<span style={{color: inputFileSizeBytes > outputFileSizeBytes ? green : red }}>{outputFileSize}</span>}
+                    variant="outlined" 
+                    icon={<SpeedIcon />} 
+                />
 
                 <Chip 
                     onClick={() => this.downloadLink.current && this.downloadLink.current.click()}

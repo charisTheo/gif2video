@@ -1,7 +1,9 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 import {
     blue,
-    blueGrey
+    blueGrey,
+    lightGreen,
+    red as MuiRed
 } from '@material-ui/core/colors';
 
 export const primary = blue; // * #2196f3
@@ -15,7 +17,8 @@ export const secondaryDark= blueGrey[900]; // * #263238
 // export const accentLight = '#7e57c2';
 // export const accentDark = '#4527a0';
 export const white = blueGrey[50]; // * #eceff1
-export const red = '#F44336';
+export const green = lightGreen['A400']; // * #76ff03
+export const red = MuiRed['A400']; // * #ff1744
 
 const theme = createMuiTheme({
     palette: {
@@ -30,6 +33,12 @@ const theme = createMuiTheme({
             label: {
                 color: white,
                 fontWeight: 800
+            },
+            icon: {
+                color: primary[500]
+            },
+            outlined: {
+                borderColor: primary[500]
             }
         },
         MuiPaper: {

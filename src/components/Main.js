@@ -133,13 +133,7 @@ export default class Main extends Component {
                     <em>(file size up to 5 MB)</em>
                 </span>
 
-                {convertedFiles && 
-                    <React.Fragment>
-                        <hr />
-                        <ConvertedVideosContainer files={convertedFiles} />
-                    </React.Fragment>
-                }
-                {loading && 
+                {loading ? 
                     <div ref={this.loadingRef} className="converting-file-placeholder">
                         <h3><em>Converting</em></h3>
                         <CircularProgress
@@ -147,6 +141,13 @@ export default class Main extends Component {
                             className="converting-file-progress"
                         />
                     </div>
+                    : convertedFiles ?
+                    <React.Fragment>
+                        <hr />
+                        <ConvertedVideosContainer files={convertedFiles} />
+                    </React.Fragment>
+                    : 
+                    ""
                 }
             </main>
         )
