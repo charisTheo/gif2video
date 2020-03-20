@@ -5,15 +5,18 @@ import {
     Paper,
     Chip
 } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import MovieIcon from '@material-ui/icons/Movie';
 import SpeedIcon from '@material-ui/icons/Speed';
 import UploadIcon from '@material-ui/icons/CloudUpload';
 // TODO:
-import GifIcon from '@material-ui/icons/Gif';
+// import GifIcon from '@material-ui/icons/Gif';
 
 import ConvertedVideosContainer from './ConvertedVideosContainer.js';
-import { fetchVideosFromGif, mapAPIResultsToFiles, bytesToKiloBytes } from './../util';
-import { primary } from '../theme.js';
+import { fetchVideosFromGif, mapAPIResultsToFiles, formatBytes } from './../util';
+import { primary, secondaryLight } from '../theme.js';
+
+const MAX_INPUT_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 
 export default class Main extends Component {
     constructor(props) {
@@ -22,6 +25,7 @@ export default class Main extends Component {
             inputFile: null,
             convertedFiles: null,
             loading: false,
+            showFileSizeError: false
         };
 
         this.inputRef = React.createRef();
@@ -34,19 +38,44 @@ export default class Main extends Component {
             return;
         }
 
-        this.setState({ inputFile, loading: true }, async () => {
-            const results = await fetchVideosFromGif(inputFile);
-            const convertedFiles = results.map((file) => mapAPIResultsToFiles(file, inputFile));
+        if (inputFile.size > MAX_INPUT_FILE_SIZE) {
+            // ! show error that the maximum file size acceptable is 5 MB
+            this.setState({ showFileSizeError: true }, () => {
+                setTimeout(() => {
+                    this.setState({ showFileSizeError: false });
+                }, 3000);
+            });
 
-            this.setState({ convertedFiles, loading: false });
-        });
+        } else {
+            this.setState({ inputFile, loading: true }, async () => {
+                const results = await fetchVideosFromGif(inputFile);
+                const convertedFiles = results.map((file) => mapAPIResultsToFiles(file, inputFile));
+    
+                this.setState({ convertedFiles, loading: false });
+            });
+
+        }
     }
 
     render() {
-        const { inputFile, convertedFiles, loading } = this.state;
+        const { 
+            inputFile, 
+            convertedFiles, 
+            loading, 
+            showFileSizeError 
+        } = this.state;
 
         return (
             <main>
+                {showFileSizeError && 
+                    <Alert 
+                        style={{ marginTop: -40, marginBottom: 40 }}
+                        severity="error"
+                    >
+                        The maximum file size acceptable is 5 MB
+                    </Alert>
+                }
+
                 {inputFile && 
                     <Paper 
                         className="file-container input-file-container"
@@ -63,7 +92,7 @@ export default class Main extends Component {
                         />
                         <Chip 
                             style={{margin: '10px 15px 0'}} 
-                            label={bytesToKiloBytes(inputFile.size) + ' KB'} 
+                            label={formatBytes(inputFile.size)} 
                             variant="outlined" 
                             color="primary" 
                             icon={<SpeedIcon />} 
@@ -92,6 +121,9 @@ export default class Main extends Component {
                 >
                     UPLOAD GIF
                 </Button>
+                <span style={{color: secondaryLight, marginTop: 5}}>
+                    <em>(file size up to 5 MB)</em>
+                </span>
 
                 {convertedFiles && 
                     <React.Fragment>

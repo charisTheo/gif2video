@@ -15,7 +15,7 @@ export default class ConvertedVideoDetails extends Component {
     }
     render() {
         const { 
-            outputFileSizeKB,
+            outputFileSize,
             objectUrl, 
             name,
             type
@@ -24,7 +24,7 @@ export default class ConvertedVideoDetails extends Component {
         return (
             <div className="converted-video-details">
                 <Chip label={type} variant="outlined" color="primary" icon={<MovieIcon />} />
-                <Chip label={outputFileSizeKB + " KB"} variant="outlined" color="primary" icon={<SpeedIcon />} />
+                <Chip label={outputFileSize} variant="outlined" color="primary" icon={<SpeedIcon />} />
 
                 <Chip 
                     onClick={() => this.downloadLink.current && this.downloadLink.current.click()}

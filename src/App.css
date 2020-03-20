@@ -53,7 +53,7 @@ header {
   margin: 0 auto;
 }
 @media (prefers-reduced-motion: no-preference) {
-  .gear-icon {
+  .header-gear-icon {
     animation: spin infinite 20s linear;
   }
 }

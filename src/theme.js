@@ -26,6 +26,10 @@ const theme = createMuiTheme({
         MuiChip: {
             root: {
                 padding: 3
+            },
+            label: {
+                color: white,
+                fontWeight: 800
             }
         },
         MuiPaper: {
@@ -34,6 +38,12 @@ const theme = createMuiTheme({
                 color: white
             }
         },
+        MuiAlert: {
+            standardError: {
+                color: 'rgb(250, 179, 174)',
+                backgroundColor: 'rgb(24, 6, 5)'
+            }
+        }
     //     MuiBackdrop: {
     //         root: {
     //             zIndex: 2
