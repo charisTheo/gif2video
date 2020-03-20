@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 
 import CodeBlock from './CodeBlock';
 
+import { secondaryLight } from '../utils/theme';
+
 export default class CodeExplainer extends Component {
     render() {
         return (
@@ -21,6 +23,17 @@ export default class CodeExplainer extends Component {
     <source src="foo.mov" type="video/quicktime">
     <source src="/video.mp4" type="video/mp4">
 </video>`}
+                </CodeBlock>
+
+                <p style={{ color: secondaryLight }}>
+                    <strong><em>(Optional) Custom playback delay</em></strong>
+                </p>
+
+                <CodeBlock language="javascript">
+                    {`document.querySelectorAll('video[autoplay]').forEach(video => {
+   video.playbackRate = 0.75;
+   video.onended = () => setTimeout(() => video.play(), 500);
+});`}
                 </CodeBlock>
             </div>
         )

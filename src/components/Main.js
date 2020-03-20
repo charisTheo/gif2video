@@ -30,7 +30,7 @@ export default class Main extends Component {
         };
 
         this.inputRef = React.createRef();
-        this.convertedFilesContainerRef = React.createRef();
+        this.loadingRef = React.createRef();
         this.handleFileInputChange = this.handleFileInputChange.bind(this);
     }
 
@@ -50,15 +50,14 @@ export default class Main extends Component {
 
         } else {
             this.setState({ inputFile, loading: true }, async () => {
+                // * scroll to loader when uploaded a file
+                if (this.loadingRef.current) {
+                    window.scrollTo(0, this.loadingRef.current.offsetTop)
+                }
                 const results = await fetchVideosFromGif(inputFile);
                 const convertedFiles = results.map((file) => mapAPIResultsToFiles(file, inputFile));
     
-                this.setState({ convertedFiles, loading: false }, () => {
-                    // * scroll to converted files when rendered
-                    if (this.convertedFilesContainerRef.current) {
-                        window.scrollTo(0, this.convertedFilesContainerRef.current.offsetTop)
-                    }
-                });
+                this.setState({ convertedFiles, loading: false });
             });
 
         }
@@ -137,14 +136,11 @@ export default class Main extends Component {
                 {convertedFiles && 
                     <React.Fragment>
                         <hr />
-                        <ConvertedVideosContainer 
-                            refProp={this.convertedFilesContainerRef} 
-                            files={convertedFiles} 
-                        />
+                        <ConvertedVideosContainer files={convertedFiles} />
                     </React.Fragment>
                 }
                 {loading && 
-                    <div className="converting-file-placeholder">
+                    <div ref={this.loadingRef} className="converting-file-placeholder">
                         <h3><em>Converting</em></h3>
                         <CircularProgress
                             size={24}
