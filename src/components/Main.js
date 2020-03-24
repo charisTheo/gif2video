@@ -13,11 +13,15 @@ import UploadIcon from '@material-ui/icons/CloudUpload';
 // import GifIcon from '@material-ui/icons/Gif';
 
 import ConvertedVideosContainer from './ConvertedVideosContainer';
-import { fetchVideosFromGif, mapAPIResultsToFiles, formatBytes } from '../utils/util';
 import { secondaryLight } from '../utils/theme';
 import CodeExplainer from './CodeExplainer';
+import { 
+    fetchVideosFromFile,
+    mapAPIResultsToFiles,
+    formatBytes
+} from '../utils/util';
+import { MAX_INPUT_FILE_SIZE, ACCEPTABLE_FILE_MIME_TYPES } from '../utils/constants';
 
-const MAX_INPUT_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 
 export default class Main extends Component {
     constructor(props) {
@@ -35,10 +39,12 @@ export default class Main extends Component {
     }
 
     async handleFileInputChange(event) {
+        // TODO: accept one file for now
         const inputFile = event.target.files[0];
         if (!inputFile) {
             return;
         }
+        inputFile.fileType = inputFile.type.split('/')[1];
 
         if (inputFile.size > MAX_INPUT_FILE_SIZE) {
             // ! show error that the maximum file size acceptable is 5 MB
@@ -54,7 +60,12 @@ export default class Main extends Component {
                 if (this.loadingRef.current) {
                     window.scrollTo(0, this.loadingRef.current.offsetTop)
                 }
-                const results = await fetchVideosFromGif(inputFile);
+                const results = await fetchVideosFromFile(inputFile);
+                if (!results) {
+                    // TODO show an error to the user
+                    this.setState({ loading: false });
+                    return;
+                }
                 const convertedFiles = results.map((file) => mapAPIResultsToFiles(file, inputFile));
     
                 this.setState({ convertedFiles, loading: false });
@@ -70,7 +81,8 @@ export default class Main extends Component {
             loading, 
             showFileSizeError 
         } = this.state;
-
+        console.log("render -> inputFile", inputFile)
+        
         return (
             <main>
                 <CodeExplainer />
@@ -90,10 +102,15 @@ export default class Main extends Component {
                         elevation={3}
                     >
                         <h3>Original file</h3>
-                        <img className="file input-file" src={URL.createObjectURL(inputFile)} alt="Original GIF file" />
+                        {inputFile.type.match(/video/g) ? 
+                            <video className="file input-file" loop muted autoPlay playsInline>
+                                <source src={URL.createObjectURL(inputFile)} type={inputFile.type} />
+                            </video> :
+                            <img className="file input-file" src={URL.createObjectURL(inputFile)} alt="Original file" />
+                        }
                         <Chip 
                             style={{margin: '10px 15px 0'}} 
-                            label={'gif'} 
+                            label={inputFile.fileType} 
                             variant="outlined" 
                             color="primary" 
                             icon={<MovieIcon />} 
@@ -112,8 +129,8 @@ export default class Main extends Component {
                     style={{display: 'none'}} 
                     onChange={this.handleFileInputChange} 
                     type="file"
-                    name="gif"
-                    accept="image/gif"
+                    name="inputFile"
+                    accept={ACCEPTABLE_FILE_MIME_TYPES.join(',')}
                     ref={this.inputRef}
                 />
                 <Button
@@ -127,9 +144,12 @@ export default class Main extends Component {
                     }}
                     startIcon={<UploadIcon />}
                 >
-                    UPLOAD GIF
+                    UPLOAD File
                 </Button>
-                <span style={{color: secondaryLight, marginTop: 5}}>
+                <span style={{color: secondaryLight, marginTop: 10}}>
+                    <em>Accepting: gif, webm, mp4, ogg, mov</em>
+                </span>
+                <span style={{color: secondaryLight, marginTop: 10}}>
                     <em>(file size up to 5 MB)</em>
                 </span>
 

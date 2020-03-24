@@ -3,4 +3,4 @@
   publish = "build"
 
 [template.environment]
-  REACT_APP_API_URL = "Your GIF converter API url and endpoint (ex: https://gif2video.herokuapp.com/convert-gif)"
+  REACT_APP_API_URL = "Your GIF converter API origin url (ex: https://gif2video.herokuapp.com)"

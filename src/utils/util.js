@@ -1,33 +1,33 @@
-const { 
-    REACT_APP_API_URL, 
-    REACT_APP_DEV_API_URL, 
-    NODE_ENV
-} = process.env;
+import { API_URL } from "./constants";
 
-const API_URL = NODE_ENV === 'development' ? REACT_APP_DEV_API_URL : REACT_APP_API_URL
-
-export const fetchVideosFromGif = async file => {
+export const fetchVideosFromFile = async file => {
     const data = new FormData();
-    data.append('gif', file);
+    data.append(file.fileType, file);
 
-    const response = await fetch(API_URL, {
-        method: 'POST',
-        body: data
-    });
+    try {
+        const response = await fetch(API_URL + `/convert-${file.fileType}`, {
+            method: 'POST',
+            body: data
+        });
+        const results = await response.json();
+        return results;
 
-    const results = await response.json();
-
-    return results;
+    } catch(error) {
+        console.log("fetchVideosFromFile: error", error);
+        return;
+    }
 }
 
 export const mapAPIResultsToFiles = (file, inputFile) => {
     const bytes = new Uint8Array(file.convertedFile.data);
     const blob = new Blob([ bytes ], { type: file.mime });
+    const regex = new RegExp("." + inputFile.fileType + "$");
+    
     return {
         ...file,
         blob,
         objectUrl: URL.createObjectURL(blob),
-        name: `${inputFile.name.split(/\.gif$/)[0]}.${file.type}`
+        name: `${inputFile.name.split(regex)[0]}.${file.type}`
     };
 }
 
