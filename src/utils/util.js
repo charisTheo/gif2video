@@ -7,7 +7,8 @@ export const fetchVideosFromFile = async file => {
     try {
         const response = await fetch(API_URL + `/convert-${file.fileType}`, {
             method: 'POST',
-            body: data
+            body: data,
+            credentials: 'include'
         });
         const results = await response.json();
         return results;
