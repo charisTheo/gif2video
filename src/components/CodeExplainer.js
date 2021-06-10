@@ -20,7 +20,7 @@ export default class CodeExplainer extends Component {
                 {`<video loop muted autoplay playsinline>
     <source src="/video.webm" type="video/webm">
     <source src="/video.ogg" type="video/ogg">
-    <source src="foo.mov" type="video/quicktime">
+    <source src="/video.mov" type="video/quicktime">
     <source src="/video.mp4" type="video/mp4">
 </video>`}
                 </CodeBlock>

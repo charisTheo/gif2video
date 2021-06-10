@@ -10,8 +10,8 @@ import SpeedIcon from '@material-ui/icons/Speed';
 import { red, green } from '../utils/theme';
 
 export default class ConvertedVideoDetails extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
 
         this.downloadLink = React.createRef();
     }

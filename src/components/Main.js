@@ -24,8 +24,8 @@ import { MAX_INPUT_FILE_SIZE, ACCEPTABLE_FILE_MIME_TYPES } from '../utils/consta
 
 
 export default class Main extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             inputFile: null,
             convertedFiles: null,
@@ -47,7 +47,7 @@ export default class Main extends Component {
         inputFile.fileType = inputFile.type.split('/')[1];
 
         if (inputFile.size > MAX_INPUT_FILE_SIZE) {
-            // ! show error that the maximum file size acceptable is 5 MB
+            // ! show error with the maximum file size acceptable
             this.setState({ showFileSizeError: true }, () => {
                 setTimeout(() => {
                     this.setState({ showFileSizeError: false });
@@ -58,7 +58,7 @@ export default class Main extends Component {
             this.setState({ inputFile, loading: true }, async () => {
                 // * scroll to loader when uploaded a file
                 if (this.loadingRef.current) {
-                    window.scrollTo(0, this.loadingRef.current.offsetTop)
+                    window.scrollTo(0, this.loadingRef.current.offsetTop + 50)
                 }
                 const results = await fetchVideosFromFile(inputFile);
                 if (!results) {
@@ -81,7 +81,6 @@ export default class Main extends Component {
             loading, 
             showFileSizeError 
         } = this.state;
-        console.log("render -> inputFile", inputFile)
         
         return (
             <main>
@@ -92,7 +91,8 @@ export default class Main extends Component {
                         style={{ marginTop: -40, marginBottom: 40 }}
                         severity="error"
                     >
-                        The maximum file size acceptable is 5 MB
+                        {/* TODO: test the formating of the maximum acceptable file size */}
+                        The maximum file size acceptable is {formatBytes(MAX_INPUT_FILE_SIZE, 0)}
                     </Alert>
                 }
 
@@ -150,7 +150,7 @@ export default class Main extends Component {
                     <em>Accepting: gif, webm, mp4, ogg, mov</em>
                 </span>
                 <span style={{color: secondaryLight, marginTop: 10}}>
-                    <em>(file size up to 5 MB)</em>
+                    <em>(file size up to 2 MB)</em>
                 </span>
 
                 {loading ? 

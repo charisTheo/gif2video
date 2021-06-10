@@ -127,6 +127,10 @@ hr {
   margin-top: 20px;
 }
 
+.lazy-load-styles-button {
+  margin: 50px auto !important;
+}
+
 @media screen and (min-width: 768px) {
   .header-github-link svg {
     font-size: 2.5rem;
